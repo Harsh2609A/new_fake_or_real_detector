@@ -1,0 +1,757 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NewsGuard AI | News Intelligence</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+:root{
+    --bg:#080b16;
+    --panel:#11172a;
+    --border:rgba(255,255,255,.09);
+    --purple:#8b5cf6;
+    --blue:#38bdf8;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    background:#6326ff;
+    filter:blur(180px);
+    opacity:.12;
+    top:-250px;
+    left:-150px;
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#0284c7;
+    filter:blur(180px);
+    opacity:.10;
+    bottom:-250px;
+    right:-150px;
+    z-index:-1;
+}
+
+nav{
+    height:80px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 7%;
+    border-bottom:1px solid var(--border);
+    background:rgba(8,11,22,.8);
+    backdrop-filter:blur(20px);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-size:23px;
+    font-weight:900;
+    letter-spacing:-1px;
+}
+
+.logo span{
+    color:#9b75ff;
+}
+
+.logo small{
+    display:block;
+    font-size:9px;
+    letter-spacing:3px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+}
+
+.nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:13px;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:white;
+}
+
+.nav-btn{
+    background:linear-gradient(120deg,#7c3aed,#2563eb);
+    color:white;
+    border:0;
+    padding:12px 20px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.hero{
+    padding:90px 8% 50px;
+    text-align:center;
+}
+
+.tag{
+    display:inline-block;
+    color:#c4b5fd;
+    background:rgba(139,92,246,.12);
+    border:1px solid rgba(139,92,246,.3);
+    padding:10px 18px;
+    border-radius:30px;
+    font-size:11px;
+    letter-spacing:2px;
+}
+
+.hero h1{
+    font-size:clamp(38px,6vw,75px);
+    line-height:1.1;
+    margin:25px 0;
+    font-weight:900;
+    letter-spacing:-3px;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#a78bfa,#38bdf8);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    max-width:650px;
+    margin:auto;
+    color:var(--muted);
+    line-height:1.8;
+    font-size:15px;
+}
+
+.dashboard{
+    width:85%;
+    max-width:1150px;
+    margin:45px auto;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat-card,.main-card,.side-card{
+    background:linear-gradient(145deg,#151c32,#0d1221);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:24px;
+    transition:.3s;
+}
+
+.stat-card:hover,.side-card:hover{
+    transform:translateY(-5px);
+    border-color:#8057f4;
+}
+
+.stat-card small{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.stat-card h2{
+    margin-top:12px;
+    font-size:29px;
+}
+
+.stat-card span{
+    color:#34d399;
+    font-size:11px;
+}
+
+.workspace{
+    display:grid;
+    grid-template-columns:1.7fr 1fr;
+    gap:20px;
+}
+
+.card-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.card-heading h2{
+    font-size:19px;
+}
+
+.card-heading span{
+    color:#a78bfa;
+    font-size:11px;
+}
+
+textarea{
+    width:100%;
+    height:190px;
+    background:#090e1c;
+    border:1px solid #28334c;
+    border-radius:12px;
+    padding:18px;
+    color:white;
+    resize:vertical;
+    outline:none;
+    font-size:14px;
+    line-height:1.7;
+}
+
+textarea:focus,input:focus{
+    border-color:#8b5cf6;
+}
+
+textarea::placeholder,input::placeholder{
+    color:#64748b;
+}
+
+.input-label{
+    color:#cbd5e1;
+    font-size:12px;
+    margin:22px 0 10px;
+    display:block;
+}
+
+.url-input{
+    width:100%;
+    background:#090e1c;
+    border:1px solid #28334c;
+    padding:15px;
+    color:white;
+    border-radius:10px;
+    outline:none;
+}
+
+.analyze-btn{
+    width:100%;
+    margin-top:22px;
+    padding:17px;
+    border:0;
+    border-radius:11px;
+    color:white;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+    background:linear-gradient(100deg,#7c3aed,#2563eb);
+    box-shadow:0 5px 25px rgba(124,58,237,.25);
+    transition:.3s;
+}
+
+.analyze-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 30px rgba(124,58,237,.4);
+}
+
+.analyze-btn:disabled{
+    opacity:.6;
+    cursor:wait;
+}
+
+#result{
+    display:none;
+    margin-top:25px;
+    background:#090e1c;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    animation:appear .5s ease;
+}
+
+@keyframes appear{
+    from{opacity:0;transform:translateY(15px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.result-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+}
+
+.result-badge{
+    padding:8px 13px;
+    border-radius:30px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.meter{
+    height:8px;
+    background:#28334c;
+    border-radius:20px;
+    margin:20px 0;
+    overflow:hidden;
+}
+
+.meter-fill{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#8b5cf6,#38bdf8);
+    transition:width 1s;
+}
+
+.result p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.7;
+}
+
+.side-card{
+    margin-bottom:20px;
+}
+
+.side-card h3{
+    font-size:16px;
+    margin-bottom:20px;
+}
+
+.activity{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid var(--border);
+    font-size:12px;
+}
+
+.activity:last-child{
+    border:0;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    display:inline-block;
+    margin-right:8px;
+    background:#a78bfa;
+}
+
+.tip{
+    background:rgba(139,92,246,.09);
+    border:1px solid rgba(139,92,246,.2);
+    padding:17px;
+    border-radius:12px;
+    color:#c4b5fd;
+    font-size:12px;
+    line-height:1.8;
+}
+
+footer{
+    text-align:center;
+    padding:45px 20px;
+    color:#64748b;
+    border-top:1px solid var(--border);
+    margin-top:70px;
+    font-size:12px;
+}
+
+footer strong{
+    color:#a78bfa;
+}
+
+@media(max-width:850px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+    .workspace{
+        grid-template-columns:1fr;
+    }
+    .dashboard{
+        width:92%;
+    }
+}
+
+@media(max-width:600px){
+    nav{
+        padding:0 5%;
+    }
+    .nav-links{
+        display:none;
+    }
+    .hero{
+        padding-top:65px;
+    }
+    .hero h1{
+        letter-spacing:-2px;
+    }
+    .stat-card{
+        padding:17px;
+    }
+    .stat-card h2{
+        font-size:23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">
+        NEWS<span>GUARD</span> AI
+        <small>INTELLIGENCE PLATFORM</small>
+    </div>
+
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#scanner">News Scanner</a>
+        <a href="#about">About</a>
+    </div>
+
+    <button class="nav-btn"
+    onclick="document.getElementById('scanner').scrollIntoView({behavior:'smooth'})">
+    Get Started ↗
+    </button>
+</nav>
+
+<section class="hero" id="home">
+
+    <div class="tag">
+        ✦ INTELLIGENT NEWS VERIFICATION
+    </div>
+
+    <h1>
+        Don't Just Read News.<br>
+        <span class="gradient">Verify It.</span>
+    </h1>
+
+    <p>
+        Analyze news content, explore credibility signals
+        and make more informed decisions with NewsGuard AI.
+        Your intelligent companion for responsible news reading.
+    </p>
+
+</section>
+
+<section class="dashboard" id="dashboard">
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <small>Total Analyses</small>
+            <h2 id="total">0</h2>
+            <span>↑ Session activity</span>
+        </div>
+
+        <div class="stat-card">
+            <small>News Reviewed</small>
+            <h2 id="reviewed">0</h2>
+            <span>Live session count</span>
+        </div>
+
+        <div class="stat-card">
+            <small>Platform Status</small>
+            <h2>Active</h2>
+            <span>● Interface operational</span>
+        </div>
+
+        <div class="stat-card">
+            <small>Analysis Mode</small>
+            <h2>Demo</h2>
+            <span>Preliminary assessment</span>
+        </div>
+
+    </div>
+
+    <div class="workspace">
+
+        <div class="main-card" id="scanner">
+
+            <div class="card-heading">
+                <h2>✦ News Intelligence Scanner</h2>
+                <span>DEMO ENGINE</span>
+            </div>
+
+            <label class="input-label">
+                ENTER NEWS HEADLINE OR ARTICLE
+            </label>
+
+            <textarea id="newsText"
+            placeholder="Paste your news headline or complete article here..."></textarea>
+
+            <label class="input-label">
+                NEWS ARTICLE URL (OPTIONAL)
+            </label>
+
+            <input class="url-input" id="newsUrl"
+            type="url" placeholder="https://example.com/news">
+
+            <button class="analyze-btn" id="analyzeBtn"
+            onclick="analyzeNews()">
+                ✦ ANALYZE NEWS NOW
+            </button>
+
+            <div id="result">
+
+                <div class="result-top">
+                    <h3>Analysis Report</h3>
+                    <span class="result-badge" id="status">
+                        REVIEW
+                    </span>
+                </div>
+
+                <h2 id="score" style="margin-top:20px">
+                    --
+                </h2>
+
+                <small style="color:#94a3b8">
+                    Preliminary text signal score
+                </small>
+
+                <div class="meter">
+                    <div class="meter-fill" id="meterFill"></div>
+                </div>
+
+                <p id="explanation"></p>
+
+                <div style="margin-top:18px">
+                    <strong style="font-size:12px">
+                        Detected signals
+                    </strong>
+                    <p id="signals" style="margin-top:10px"></p>
+                </div>
+
+                <p style="margin-top:18px;color:#fbbf24">
+                    ⚠ This is a demo assessment, not a factual verdict.
+                    Independently verify the article using reliable sources.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <div class="side-card">
+                <h3>◈ Recent Activity</h3>
+
+                <div id="history">
+                    <p style="color:#64748b;font-size:12px">
+                        Your analysis history will appear here.
+                    </p>
+                </div>
+            </div>
+
+            <div class="side-card" id="about">
+
+                <h3>✦ Verification Tips</h3>
+
+                <div class="tip">
+                    <strong>01 — Check the source</strong><br>
+                    Look for established and transparent publishers.
+                </div>
+
+                <br>
+
+                <div class="tip">
+                    <strong>02 — Verify the date</strong><br>
+                    Old stories can be shared as if they are new.
+                </div>
+
+                <br>
+
+                <div class="tip">
+                    <strong>03 — Compare reporting</strong><br>
+                    Check whether independent sources report
+                    the same information.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <strong>NEWSGUARD AI</strong><br><br>
+    Smart Technology • Responsible Journalism • Better Information<br><br>
+    © 2026 NewsGuard AI. Educational Project.
+</footer>
+
+<script>
+
+let totalAnalyses = 0;
+
+function analyzeNews(){
+
+    const text = document.getElementById("newsText").value.trim();
+    const url = document.getElementById("newsUrl").value.trim();
+
+    if(text.length < 20){
+        alert("Please enter at least 20 characters of news content.");
+        return;
+    }
+
+    const btn = document.getElementById("analyzeBtn");
+
+    btn.disabled = true;
+    btn.innerHTML = "◌ ANALYZING NEWS...";
+
+    const result = document.getElementById("result");
+    result.style.display = "block";
+
+    document.getElementById("explanation").innerText =
+    "Checking preliminary language signals...";
+
+    document.getElementById("score").innerText = "Analyzing...";
+
+    document.getElementById("meterFill").style.width = "0%";
+
+    setTimeout(()=>{
+
+        const words = text.toLowerCase();
+
+        const warningWords = [
+            "shocking",
+            "secret",
+            "guaranteed",
+            "100% true",
+            "share immediately",
+            "everyone must",
+            "breaking",
+            "miracle",
+            "unbelievable",
+            "forward this"
+        ];
+
+        const found = warningWords.filter(word =>
+            words.includes(word)
+        );
+
+        let score = Math.max(15, 85 - found.length * 12);
+
+        let status = "NEEDS REVIEW";
+        let color = "#fbbf24";
+
+        if(found.length >= 3){
+            status = "CAUTION";
+            color = "#fb7185";
+        }
+        else if(found.length === 0){
+            status = "FEWER WARNING SIGNALS";
+            color = "#34d399";
+        }
+
+        document.getElementById("status").innerText = status;
+        document.getElementById("status").style.background =
+        color + "22";
+        document.getElementById("status").style.color = color;
+
+        document.getElementById("score").innerText =
+        score + "/100";
+
+        document.getElementById("meterFill").style.width =
+        score + "%";
+
+        let explanation;
+
+        if(found.length >= 3){
+            explanation =
+            "Several sensational or urgent expressions were found. " +
+            "These are reasons to review the article carefully, " +
+            "but do not prove that the story is false.";
+        }
+        else if(found.length === 0){
+            explanation =
+            "Fewer warning expressions were found. " +
+            "This does not establish that the article is true. " +
+            "Check its sources and supporting evidence.";
+        }
+        else{
+            explanation =
+            "Some language signals deserve closer attention. " +
+            "Compare the claims with independent, reliable reporting.";
+        }
+
+        document.getElementById("explanation").innerText =
+        explanation;
+
+        document.getElementById("signals").innerText =
+        found.length ?
+        found.join(", ") :
+        "No listed warning expressions detected.";
+
+        if(url){
+            document.getElementById("signals").innerText +=
+            " | URL supplied (not independently checked).";
+        }
+
+        totalAnalyses++;
+
+        document.getElementById("total").innerText =
+        totalAnalyses;
+
+        document.getElementById("reviewed").innerText =
+        totalAnalyses;
+
+        const history = document.getElementById("history");
+
+        const item = document.createElement("div");
+        item.className = "activity";
+
+        const shortText = text.substring(0,25) + "...";
+
+        const name = document.createElement("span");
+        name.innerHTML = '<span class="dot"></span>';
+        name.appendChild(document.createTextNode(shortText));
+
+        const badge = document.createElement("span");
+        badge.style.color = color;
+        badge.textContent = status;
+
+        item.appendChild(name);
+        item.appendChild(badge);
+
+        history.prepend(item);
+
+        btn.disabled = false;
+        btn.innerHTML = "✦ ANALYZE NEWS NOW";
+
+    },1500);
+
+}
+
+</script>
+
+</body>
+</html>
